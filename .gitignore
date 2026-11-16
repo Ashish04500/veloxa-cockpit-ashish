@@ -1,0 +1,21 @@
+# Private hackathon source data
+data/raw/
+data/processed/
+*.zip
+
+# Secrets
+.env
+.env.*
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Database
+*.db
+*.sqlite3
+
+# IDE
+.vscode/
