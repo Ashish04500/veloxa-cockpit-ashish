@@ -42,3 +42,13 @@
 - Implement evidence retrieval and citation support.
 - Complete the employee agent behaviour and CEO question-answering functionality.
 - Integrate the remaining release packs.
+
+## Day 2 — 17 November 2026
+
+- Used AI assistance to inspect and interpret the T3 Head of People transcript and T6a CEO voice note.
+- Used AI assistance to compare HR transcript claims against hiring records, pulse survey data, emails, and Siddharth Mehta's resignation letter.
+- Identified evidence-backed concerns around Engineering capacity and Marketing knowledge transfer.
+- Recorded uncertainty around attrition figures, hiring metrics, and the unnamed engineer.
+- Decided to preserve small-team survey privacy and avoid exposing individual comments.
+- Translated the CEO's T6a request into a proactive top-three risk summary requirement.
+- All evidence interpretations and implementation decisions are subject to verification against source files.

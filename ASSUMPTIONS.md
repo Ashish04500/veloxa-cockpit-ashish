@@ -67,3 +67,16 @@ Newer pulse data, confidential employee feedback, workload records, incident tre
 4. Distinguish recorded expenses from final reconciled costs.
 5. Do not label Rahul's payroll discrepancy a confirmed overpayment without verifying the payroll policy and subsequent adjustments.
 6. Keep individual salary information restricted. CEO-facing payroll responses
+
+## Day 2 — HR and Employee Risk Assumptions
+
+1. Engineering pulse decline is treated as a warning signal, not proof of employee dissatisfaction or its cause.
+2. The latest Engineering pulse score is 3.1, with 4 responses from a team of 5.
+3. The pause of REQ-014 and REQ-015 is confirmed. Its impact on workload is plausible but not independently measured.
+4. Siddharth Mehta's resignation and stated reasons are confirmed by his resignation letter.
+5. Siddharth's departure creates a potential Marketing knowledge-transfer and launch-continuity risk. The actual impact remains to be assessed.
+6. Attrition described as "about twelve" is ambiguous and excluded from quantitative reporting.
+7. Claims about 22 open roles, six lost roles, and offer acceptance in the 50s are unverified.
+8. Individual pulse comments and the identity of the unnamed engineer must not be exposed.
+9. Small-team survey scores are displayed only in aggregate, with response counts and appropriate uncertainty.
+10. Risk rankings are provisional and must be updated when additional evidence arrives.

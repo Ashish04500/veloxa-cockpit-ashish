@@ -99,3 +99,17 @@
 **Reason:** Source material includes confidential business information and individual payroll data.
 
 **Implementation:** `.gitignore` excludes `data/raw/`, `data/processed/`, `.env` files, virtual environments and generated database files.
+
+## Day 2 Decisions
+
+### 1. Proactive CEO Risk Summary
+The cockpit will display the top three current business risks on opening, without requiring a CEO question. Each risk must include evidence, confidence, impact, and a recommended action.
+
+### 2. Employee Survey Privacy
+Individual pulse survey comments will not be exposed for small teams. Aggregate scores and response counts may be displayed, but the unnamed employee mentioned in T3 will not be identified.
+
+### 3. Evidence-Based Risk Ranking
+Risk ranking must distinguish verified evidence from assumptions. Unverified transcript figures will not be used as established facts. Rankings remain provisional as new evidence arrives.
+
+### 4. Marketing Handover
+Siddharth Mehta's departure is confirmed. The cockpit may flag a potential marketing knowledge-transfer risk, but must not claim a launch failure without further evidence.

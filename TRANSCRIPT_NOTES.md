@@ -33,3 +33,31 @@
 - **Transcript:** CFO mentions two backend roles.
 - **Evidence:** GL records a ₹177,000 recruitment search-fee advance for two backend roles on 30 June. Jul–Sep board update subsequently reports hiring paused.
 - **Assessment:** Hiring activity is supported, followed by a later hiring pause. These events may reflect a change in decision over
+
+## Day 2 — T3 Head of People and T6a CEO Voice Note
+
+### T3: Head of People Call
+
+- Engineering pulse decline is corroborated by the Pulse Survey and Deepa's email dated 29 September 2026.
+- Engineering's score declined from 3.9 to 3.1 in the available quarterly results. The latest result has 4 responses from a team of 5.
+- Deepa explicitly stated that the Engineering team is too small to share individual survey comments. Raw comments must remain hidden.
+- REQ-014 and REQ-015 were paused on 12 August 2026 by Meera pending the funding round. Vikram acknowledged that the team would absorb the work.
+- Siddharth Mehta's resignation is confirmed by his letter dated 15 September 2026. His last working day was 31 October 2026.
+- Siddharth cited unclear launch timelines and work not reaching customers as reasons for seeking another role.
+- T3's statements about 22 open roles, six lost roles, offer acceptance in the 50s, and attrition of "about twelve" remain unverified or ambiguous.
+- The unnamed engineer mentioned by Deepa must not be identified through inference.
+- The transcript contains conflicting statements about when manager training began. Do not treat either date as confirmed.
+
+### T6a: CEO Voice Note
+
+- CEO requests a proactive cockpit that displays the top three things requiring attention when opened.
+- Product decision: provide a ranked top-three risk view without requiring the CEO to submit a question.
+- Each risk should include supporting evidence, confidence, business impact, and recommended next action.
+- The cockpit must distinguish verified facts from assumptions and explicitly show when evidence is insufficient.
+
+### Evidence and Privacy Decisions
+
+- Use aggregate pulse scores for small teams; do not expose individual survey comments.
+- Do not identify the unnamed engineer.
+- Do not present ambiguous attrition or hiring figures as established facts.
+- Treat the Engineering workload/capacity concern and Marketing handover concern as evidence-backed risks, not proven causal conclusions.
