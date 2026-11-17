@@ -63,3 +63,41 @@
 - Added six risk-engine tests covering risk count, ranking, priorities, evidence presence, payroll exclusion, and score calculation.
 - Full test suite: 43 tests passed.
 - Limitation: urgency is manually assigned, and evidence-source count is only a rough proxy for evidence strength. Scores are prioritisation heuristics, not probabilities.
+
+### CEO Cockpit API and Question-Answering — 17 November 2026
+
+#### 1. FastAPI backend
+- Implemented the FastAPI application in `backend/app/main.py`.
+- Added a health-check endpoint (`GET /`).
+- Added a top-three risk endpoint (`GET /api/risks`) backed by the risk engine.
+- Verified both endpoints locally using the API documentation and automated tests.
+
+#### 2. Evidence-backed CEO question answering
+- Implemented `backend/app/cockpit/answer_engine.py`.
+- Added topic-specific evidence retrieval for engineering hiring, monthly burn, engineering pulse and Siddharth's resignation.
+- Added source and record filtering so answers include only relevant evidence.
+- Added citations, confidence labels and insufficient-evidence responses.
+- Engineering hiring answers require five specific supporting records, including both paused requisitions and the relevant emails.
+
+#### 3. Privacy and uncertainty safeguards
+- Added refusal rules for individual salary information, private survey comments and identification of the unnamed engineer.
+- Unsupported questions return an insufficient-evidence response instead of an invented answer.
+- Engineering workload impact is explicitly described as unquantified rather than treated as a proven consequence of the hiring pause.
+
+#### 4. Verification
+- Manually tested four supported question categories and three privacy/unsupported-question cases.
+- Verified that the engineering hiring answer returned all five required evidence records.
+- Ran the complete pytest suite: 52 tests passed, with one non-blocking deprecation warning.
+- Added API and answer-engine automated tests.
+
+#### 5. Current limitations
+- The answer engine currently uses deterministic, topic-specific responses; it is not an LLM-based conversational agent.
+- The risk endpoint provides data to the frontend, but automatic display when the CEO opens a dashboard is not implemented yet.
+- Point-in-time event-date filtering and comprehensive role-based access control are not yet complete.
+- Risk scores remain heuristic prioritisation scores, not statistical probabilities.
+
+#### 6. Human verification and responsibility
+- Ran the implementation and tests locally.
+- Checked returned evidence against the original source records.
+- Reviewed privacy refusals and unsupported-question behaviour.
+- Retained responsibility for reviewing the code, interpreting evidence and validating implementation decisions.
