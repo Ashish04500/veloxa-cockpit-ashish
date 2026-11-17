@@ -45,3 +45,12 @@ def test_empty_question_is_rejected():
     result = answer_ceo_question("   ")
 
     assert result["status"] == "invalid_question"
+
+def test_ambiguous_attrition_rate_returns_insufficient_evidence():
+    result = answer_ceo_question(
+        "What is the attrition rate?"
+    )
+
+    assert result["status"] == "insufficient_evidence"
+    assert result["confidence"] == "Low"
+    assert result["evidence"] == []

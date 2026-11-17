@@ -101,3 +101,9 @@
 - Checked returned evidence against the original source records.
 - Reviewed privacy refusals and unsupported-question behaviour.
 - Retained responsibility for reviewing the code, interpreting evidence and validating implementation decisions.
+
+#### 7. Additional uncertainty test and final verification
+- Added a test confirming that the ambiguous attrition statement ("about twelve") is not reported as a verified attrition rate.
+- The test expects an insufficient-evidence response with Low confidence and no supporting evidence.
+- Re-ran the complete pytest suite: 53 tests passed, with one non-blocking Starlette deprecation warning.
+- The five uncertainty/refusal scenarios cover unsupported questions, ambiguous attrition, individual salary, private survey comments and unnamed employee identity.
