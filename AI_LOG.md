@@ -64,7 +64,7 @@
 - Full test suite: 43 tests passed.
 - Limitation: urgency is manually assigned, and evidence-source count is only a rough proxy for evidence strength. Scores are prioritisation heuristics, not probabilities.
 
-### CEO Cockpit API and Question-Answering � 17 November 2026
+### CEO Cockpit API and Question-Answering � 17 November 2026
 
 #### 1. FastAPI backend
 - Implemented the FastAPI application in `backend/app/main.py`.
@@ -107,3 +107,54 @@
 - The test expects an insufficient-evidence response with Low confidence and no supporting evidence.
 - Re-ran the complete pytest suite: 53 tests passed, with one non-blocking Starlette deprecation warning.
 - The five uncertainty/refusal scenarios cover unsupported questions, ambiguous attrition, individual salary, private survey comments and unnamed employee identity.
+
+ 
+### React CEO Dashboard Implementation — 18 November 2026
+
+#### 1. Frontend setup
+- Created a React frontend using Vite.
+- Configured the Vite development proxy to forward `/api` requests to the FastAPI backend.
+- Added a responsive executive dashboard with a dark visual theme.
+
+#### 2. Dashboard functionality
+- Integrated the frontend with `GET /api/risks`.
+- Automatically fetches and displays the top three business risks when the dashboard opens.
+- Added summary metrics for priority risks, high-impact risks and distinct evidence sources.
+- Added risk cards showing priority, heuristic score, impact, confidence, urgency and evidence strength.
+- Added recommended CEO actions and explicit uncertainty for each risk.
+- Added expandable evidence sections with source citations.
+- Added manual refresh functionality and last-updated timestamp.
+- Implemented a time-aware greeting.
+
+#### 3. API status and error handling
+- Added a dynamic API connection indicator.
+- Added error handling for failed API requests.
+- Verified that stopping the backend changes the status to API DISCONNECTED and displays an error.
+- Verified that restarting the backend restores successful API loading.
+
+#### 4. Verification
+- Verified the dashboard in the browser with all three risk records.
+- Verified that supporting evidence expands correctly.
+- Frontend ESLint check: passed.
+- Frontend Vite production build: passed.
+- Verified frontend-to-backend communication through the Vite proxy.
+
+#### 5. Current limitations
+- API status reflects the latest request and does not continuously monitor the backend.
+- Risk scores remain heuristic prioritisation scores, not probabilities.
+- Historical point-in-time filtering and comprehensive role-based access control remain incomplete.
+
+#### 6. Human verification and responsibility
+- Reviewed the dashboard output against the backend API response.
+- Tested successful and failed API requests.
+- Reviewed frontend code and verified lint and production build results.
+- Retained responsibility for validating implementation decisions and evidence presentation.
+
+### Frontend Dependency Security Audit — 18 November 2026
+
+- Ran `npm audit` and identified five high-severity findings associated with the picomatch dependency in the Vite development toolchain.
+- Dependency inspection confirmed Vite 8.3.8, @vitejs/plugin-react 6.3.0 and picomatch 4.0.7.
+- npm proposed a forced fix that would downgrade Vite to 6.2.7, potentially introducing breaking changes.
+- Avoided applying the forced downgrade without a verified compatible fix.
+- Ran `npm audit --omit=dev`; result: zero production vulnerabilities.
+- Current limitation: development dependency vulnerabilities remain unresolved and require monitoring for a compatible upstream patch.

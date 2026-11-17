@@ -1,4 +1,5 @@
-﻿# CEO Voice Note Responses
+﻿
+# CEO Voice Note Responses
 
 ## T6a — Proactive Top-Three Risk Summary
 
@@ -7,15 +8,15 @@
 
 ### Response
 
-We agree with the request. The CEO cockpit should open with a concise summary of the three highest-priority business risks instead of requiring the CEO to ask questions manually.
+The CEO cockpit now automatically displays a concise summary of the three highest-priority business risks when the frontend dashboard opens.
 
 ### What we implemented
 
-We implemented a provisional evidence-backed risk engine and exposed it through the FastAPI endpoint:
+We implemented an evidence-backed risk engine and exposed it through the FastAPI endpoint:
 
 `GET /api/risks`
 
-The endpoint returns three ranked risks:
+The React frontend automatically fetches this endpoint on opening and displays three ranked risks:
 
 1. Engineering capacity and delivery risk.
 2. Funding and runway watch.
@@ -28,19 +29,34 @@ Each risk includes:
 - Recommended next action.
 - Explicit uncertainty and limitations.
 
+The dashboard also includes:
+- Summary metrics for priority risks, high-impact risks and evidence sources.
+- Expandable evidence sections.
+- Manual refresh functionality.
+- API connection status and error handling.
+- Last-updated timestamp.
+
+### Verification
+
+- Backend API successfully returns three risk records.
+- Frontend successfully retrieves and displays all three risks.
+- Evidence sections expand and show supporting records.
+- API disconnection displays an error and changes the status indicator.
+- API reconnection restores successful loading.
+- ESLint passes.
+- Vite production build passes.
+
 ### Why this approach
 
 The cockpit should help the CEO make decisions without presenting assumptions as facts. Risks are ranked using impact, manually assigned urgency and the number of distinct supporting source files.
 
 The scores are prioritisation heuristics, not probabilities. Confidence and uncertainty are displayed separately so the CEO can distinguish verified facts from possible consequences.
 
-### Current limitation
+### Current limitations
 
-The risk summary is currently available through the API. Automatic display when the CEO opens the frontend dashboard has not yet been implemented.
-
-### Next implementation step
-
-Integrate the endpoint into the dashboard so the top three risks appear automatically on opening, with evidence and recommended actions available for review.
+- Risk scoring is heuristic rather than statistically calibrated.
+- The dashboard currently displays the latest risk summary returned by the API; historical point-in-time filtering is not yet fully implemented.
+- API connection status reflects the latest request, not continuous real-time monitoring.
 
 ### Product decision
 
