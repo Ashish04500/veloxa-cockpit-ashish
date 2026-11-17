@@ -52,3 +52,14 @@
 - Decided to preserve small-team survey privacy and avoid exposing individual comments.
 - Translated the CEO's T6a request into a proactive top-three risk summary requirement.
 - All evidence interpretations and implementation decisions are subject to verification against source files.
+
+
+### Risk Engine Implementation
+- Created a provisional CEO risk engine in `backend/app/cockpit/risk_engine.py`.
+- Added source-specific and content-specific evidence filtering to prevent unrelated records from appearing under a risk.
+- Implemented a transparent heuristic score using impact, manually assigned urgency, and distinct evidence-source count.
+- Ranked engineering capacity, funding/runway, and marketing continuity risks using the calculated scores.
+- Preserved evidence citations, confidence labels, recommended actions, and explicit uncertainty.
+- Added six risk-engine tests covering risk count, ranking, priorities, evidence presence, payroll exclusion, and score calculation.
+- Full test suite: 43 tests passed.
+- Limitation: urgency is manually assigned, and evidence-source count is only a rough proxy for evidence strength. Scores are prioritisation heuristics, not probabilities.
