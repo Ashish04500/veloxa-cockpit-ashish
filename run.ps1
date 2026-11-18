@@ -27,6 +27,7 @@ if (-not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) {
 # 2. Check release data
 $DAY1 = Join-Path $RELEASE_ROOT "Day1_Mon_16Nov"
 $DAY2 = Join-Path $RELEASE_ROOT "Day2_Tue_17Nov"
+$DAY3 = Join-Path $RELEASE_ROOT "Day3_Wed_18Nov"
 
 if (-not (Test-Path $DAY1)) {
     throw "Day 1 release folder missing: $DAY1"
@@ -34,6 +35,10 @@ if (-not (Test-Path $DAY1)) {
 
 if (-not (Test-Path $DAY2)) {
     throw "Day 2 release folder missing: $DAY2"
+}
+
+if (-not (Test-Path $DAY3)) {
+    throw "Day 3 release folder missing: $DAY3"
 }
 
 # 3. Create Python virtual environment if needed
@@ -78,6 +83,13 @@ Write-Host "`nIngesting Day 2 data..." -ForegroundColor Yellow
 
 if ($LASTEXITCODE -ne 0) {
     throw "Day 2 ingestion failed."
+}
+
+Write-Host "`nIngesting Day 3 data..." -ForegroundColor Yellow
+& $VENV_PYTHON (Join-Path $BACKEND "app\ingest_day3.py")
+
+if ($LASTEXITCODE -ne 0) {
+    throw "Day 3 ingestion failed."
 }
 
 # 7. Launch backend in a separate PowerShell window

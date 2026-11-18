@@ -113,3 +113,62 @@ Risk ranking must distinguish verified evidence from assumptions. Unverified tra
 
 ### 4. Marketing Handover
 Siddharth Mehta's departure is confirmed. The cockpit may flag a potential marketing knowledge-transfer risk, but must not claim a launch failure without further evidence.
+
+
+## Day 3 Decisions
+
+### 1. Atlas GA Date Reconciliation
+**Decision:** Use the Jira Versions record as the current formal Atlas GA date: 15 December 2026, revised from 15 September 2026 on 2 September 2026.
+
+**Reason:** The structured Jira release record provides a formal date and change history. The optimistic T5 transcript does not override it.
+
+**Limitation:** The reason for the revision is not established. Do not classify every unresolved Jira issue as a GA blocker.
+
+### 2. Engineering Reliability Risk
+**Decision:** Include the three August SEV1 routing-api incidents in the Engineering risk evidence.
+
+**Reason:** The incident register records three SEV1 incidents, and the 24 August email confirms that Atlas performance work was paused to stabilise routing-api.
+
+**Limitation:** Incident root causes, total engineering effort and individual workload are not established.
+
+### 3. Employee Identity Resolution
+**Decision:** Keep "Sneha" and "Snehal" as separate unresolved identity references.
+
+**Reason:** The incident register and on-call rota use both names. There is insufficient evidence to merge them.
+
+**Limitation:** Do not attribute all incidents or on-call activity to one employee without authoritative confirmation.
+
+### 4. Workload and Productivity Claims
+**Decision:** Do not use Git commit counts, rota assignments or incident responder counts as direct measures of employee productivity, overtime or workload.
+
+**Reason:** These records show activity or assignments, not hours worked or individual capacity.
+
+### 5. Contractor Invoice Interpretation
+**Decision:** Treat invoice PIS-114 as evidence of September SRE support costing ₹1,20,000 before tax.
+
+**Reason:** The invoice records a monthly support charge.
+
+**Limitation:** It does not establish a budget overrun or prove the contractor's identity in relation to the incident and rota records.
+
+### 6. Marketing Launch Readiness
+**Decision:** Represent the Atlas launch kit as partially prepared, not fully launch-ready.
+
+**Reason:** The launch kit records prepared materials, but the website page was unpublished and the press note remained a draft.
+
+**Limitation:** Do not attribute the launch delay to Siddharth's departure without direct evidence.
+
+### 7. Marketing Reporting Change
+**Decision:** Preserve the current reporting structure until the new CRO transition is confirmed.
+
+**Reason:** T6b describes a planned change but gives an uncertain effective date: next month or the month after.
+
+**Implementation direction:** Support effective-dated reporting relationships so historical organisational structure can be reconstructed without rewriting past reporting lines.
+
+**Unknowns:** CRO identity, approval status and exact effective date.
+
+### 8. Evidence and Transcript Handling
+**Decision:** Preserve unresolved statements and transcript limitations rather than filling gaps with assumptions.
+
+**Reason:** T4 and T5 contain unverified claims, and T5 has an audio gap from 11:20 to 15:30.
+
+**Implementation:** Prefer structured primary records for formal dates and incident counts, while retaining transcript claims as attributed statements.

@@ -80,3 +80,41 @@ Newer pulse data, confidential employee feedback, workload records, incident tre
 8. Individual pulse comments and the identity of the unnamed engineer must not be exposed.
 9. Small-team survey scores are displayed only in aggregate, with response counts and appropriate uncertainty.
 10. Risk rankings are provisional and must be updated when additional evidence arrives.
+
+
+## Day 3 — Engineering, Marketing and Organisational Change Assumptions
+
+1. The Jira Versions sheet is treated as the authoritative available record for the Atlas GA release date. It records a change from 15 September 2026 to 15 December 2026 on 2 September 2026 by Vikram. This does not establish the reason for the change.
+
+2. The 27 unresolved Jira issues (19 To Do and 8 In Progress) represent outstanding work in the Atlas GA version. They are not automatically classified as GA blockers.
+
+3. The three August SEV1 routing-api incidents are confirmed by the incident register. Their severity and listed responders are established, but their root causes and total engineering effort are not.
+
+4. The T5 transcript's description of Atlas as on track is not used to override the formal Jira release date.
+
+5. The Engineering hiring pause, incident history and release-date revision together indicate delivery and reliability pressure. The evidence does not prove that the hiring pause caused the delay or incidents.
+
+6. The Atlas launch kit had several prepared components, but the website page was unpublished and the press note remained a draft. A completed launch kit must not be treated as proof of complete launch readiness.
+
+7. Siddharth's departure is confirmed by his resignation letter, but its direct effect on launch execution has not been established.
+
+8. The incident register and on-call rota use both "Sneha" and "Snehal". These names must remain separate until an authoritative employee record confirms whether they refer to the same person.
+
+9. Git commit counts are not treated as measures of productivity, working hours, overtime or individual workload.
+
+10. The September SRE contractor invoice confirms a recorded retainer of ₹1,20,000 before tax. It does not independently establish a budget overrun or the contractor's identity in relation to the names in the incident and rota records.
+
+11. Priya's request to discuss Atlas ownership is a signal that ownership may need clarification. The reason for the request and any subsequent decision remain unknown.
+
+12. The T6b voice note indicates a planned Marketing reporting change to a new CRO, but its effective date is uncertain. Current reporting relationships must not be changed based only on this transcript.
+
+13. The identity of the new CRO, final approval status and exact effective date are unknown.
+
+### Day 3 confidence and evidence rules
+
+- Prefer structured Jira and incident records over optimistic or incomplete transcript statements when reporting formal dates and incident counts.
+- Preserve source dates and distinguish event dates from document or export dates.
+- Do not infer individual workload from commit counts, on-call assignments or incident ownership alone.
+- Do not merge employee identities based on similar names.
+- Do not claim causal relationships between hiring decisions, incidents, employee departures and delivery delays without direct evidence.
+- Treat the new CRO reporting change as a future organisational scenario until confirmed.

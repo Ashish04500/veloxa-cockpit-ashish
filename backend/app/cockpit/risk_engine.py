@@ -1,4 +1,4 @@
-
+﻿
 import sys
 from pathlib import Path
 
@@ -12,13 +12,18 @@ def collect_evidence(
     query,
     allowed_sources,
     required_terms=None,
-    top_k=30
+    top_k=30,
+    release_days=None
 ):
     """Retrieve and filter evidence using source and content constraints."""
 
     results = search_evidence(
         query,
-        release_days=["Day1", "Day2"],
+        release_days=(
+            release_days
+            if release_days is not None
+            else ["Day1", "Day2", "Day3"]
+        ),
         top_k=top_k
     )
 
@@ -124,6 +129,29 @@ def get_top_risks():
             "Atlas reliability work delay",
             ["Board_Update_Jul-Sep_2026.pdf"]
         )
+        + collect_evidence(
+            "Atlas GA release date original release date",
+            ["Jira_Export_ATLAS.xlsx"],
+            [
+                "Original Release Date: 2026-09-15",
+                "Release Date: 2026-12-15"
+            ]
+        )
+        + collect_evidence(
+            "INC-201 SEV1 routing-api",
+            ["Incidents_Aug-Oct_2026.xlsx"],
+            ["INC-201", "SEV1", "routing-api"]
+        )
+        + collect_evidence(
+            "INC-203 SEV1 routing-api",
+            ["Incidents_Aug-Oct_2026.xlsx"],
+            ["INC-203", "SEV1", "routing-api"]
+        )
+        + collect_evidence(
+            "INC-205 SEV1 routing-api",
+            ["Incidents_Aug-Oct_2026.xlsx"],
+            ["INC-205", "SEV1", "routing-api"]
+        )
     )
 
     marketing_evidence = (
@@ -155,25 +183,33 @@ def get_top_risks():
     risks = [
         build_risk(
             risk_id="RISK-001",
-            title="Engineering capacity and delivery risk",
+            title="Atlas delivery and reliability risk",
             confidence="Medium-High",
             impact="High",
             urgency=5,
             explanation=(
-                "Two engineering requisitions were paused, the "
-                "engineering pulse score declined to 3.1, and the "
-                "latest board update reports Atlas reliability delays. "
-                "Together these indicate delivery and capacity pressure."
+                "The Atlas GA release date was revised from "
+                "15 September to 15 December 2026 on 2 September "
+                "by Vikram. The incident register records three August "
+                "SEV1 incidents affecting routing-api, all assigned "
+                "to Sneha. Earlier evidence also shows two engineering "
+                "requisitions were paused and the engineering pulse "
+                "score declined to 3.1. Together, these indicate "
+                "delivery and reliability pressure."
             ),
             action=(
-                "Ask the VP Engineering for a capacity assessment, "
-                "critical delivery commitments, and a recovery plan "
-                "for Atlas."
+                "Ask the VP Engineering for an updated Atlas recovery "
+                "plan, the remaining GA-critical work, incident "
+                "root-cause actions, and current engineering capacity."
             ),
             evidence=engineering_evidence,
             uncertainty=(
-                "The evidence does not prove that the hiring pause "
-                "caused the pulse decline or Atlas delay."
+                "The Jira export does not establish that every "
+                "unresolved ticket blocks GA. The incident records "
+                "establish severity and responders but do not establish "
+                "root causes. The evidence does not prove that the "
+                "hiring pause caused the schedule revision or "
+                "reliability incidents."
             )
         ),
 

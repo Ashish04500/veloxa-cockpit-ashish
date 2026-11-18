@@ -5,7 +5,11 @@ from pathlib import Path
 BACKEND_DIR = Path(__file__).resolve().parents[1] / "backend"
 sys.path.insert(0, str(BACKEND_DIR))
 
-from app.cockpit.risk_engine import build_risk, get_top_risks
+from app.cockpit.risk_engine import (
+    build_risk,
+    get_top_risks,
+    collect_evidence,
+)
 
 
 def test_returns_three_risks():
@@ -65,3 +69,49 @@ def test_risk_score_calculation():
     # Urgency = 4 * 2 = 8
     # Two distinct sources = 2
     assert risk["score"] == 19
+
+
+def test_engineering_risk_includes_day3_records():
+    risks = get_top_risks()
+    engineering = risks[0]
+
+    evidence_text = " ".join(
+        item["evidence"] for item in engineering["evidence"]
+    )
+
+    assert "2026-12-15" in evidence_text
+
+    assert all(
+        incident in evidence_text
+        for incident in ["INC-201", "INC-203", "INC-205"]
+    )
+
+
+def test_collect_evidence_requires_all_terms(monkeypatch):
+    import app.cockpit.risk_engine as risk_engine
+
+    monkeypatch.setattr(
+        risk_engine,
+        "search_evidence",
+        lambda *args, **kwargs: [
+            {
+                "source_file": "Incidents_Aug-Oct_2026.xlsx",
+                "text": "INC-201 SEV1 routing-api",
+                "citation": "Incidents_Aug-Oct_2026.xlsx (row 1, Day3)",
+            },
+            {
+                "source_file": "Incidents_Aug-Oct_2026.xlsx",
+                "text": "INC-203 SEV1 database",
+                "citation": "Incidents_Aug-Oct_2026.xlsx (row 2, Day3)",
+            },
+        ],
+    )
+
+    results = collect_evidence(
+        query="incident",
+        allowed_sources=["Incidents_Aug-Oct_2026.xlsx"],
+        required_terms=["SEV1", "routing-api"],
+    )
+
+    assert len(results) == 1
+    assert "INC-201" in results[0]["evidence"]

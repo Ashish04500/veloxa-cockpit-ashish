@@ -61,3 +61,48 @@ The scores are prioritisation heuristics, not probabilities. Confidence and unce
 ### Product decision
 
 We will prioritise a proactive top-three risk summary, but will not generate warnings unsupported by available evidence. Where evidence is incomplete or conflicting, the cockpit must communicate that uncertainty rather than invent a conclusion.
+
+
+## T6b — Planned Marketing Reporting Change
+
+### CEO's statement
+
+The CEO stated that Marketing would report to a new CRO from "next month. Or the month after", indicating that the transition date was still being finalised.
+
+### Response
+
+The cockpit should treat this as a planned organisational change, not a completed reporting-line update.
+
+The available voice note does not establish:
+- The identity of the incoming CRO.
+- The exact effective date.
+- Whether the change has received final approval.
+- Whether any interim reporting arrangement applies.
+
+The current reporting structure should therefore remain unchanged until an authoritative confirmation is available.
+
+### Recommended cockpit behaviour
+
+1. Record the proposed Marketing reporting change as a pending organisational event.
+2. Preserve the existing reporting relationship as the current confirmed structure.
+3. Request confirmation of the new CRO's identity, approval status and effective date.
+4. Once confirmed, record the new reporting relationship with its effective date.
+5. Retain the previous relationship so historical reporting structures can be reconstructed for earlier periods.
+
+### Evidence and confidence
+
+**Source:** T6b_CEO_Voice_Note.docx.
+
+**Confidence:** High that a reporting change is planned. Low regarding its exact timing and implementation details.
+
+The phrase "next month. Or the month after" is explicitly uncertain and must not be converted into a definite date.
+
+### Current implementation status
+
+The current cockpit does not yet provide a complete effective-dated organisational history feature. This is a recommended product requirement, not a verified existing capability.
+
+Until implemented, the system must not silently overwrite current employee-manager relationships based on this voice note.
+
+### Product decision
+
+Organisational changes must be represented with effective dates and retained history. The cockpit should distinguish proposed, approved and effective changes, preventing future organisational plans from being presented as current facts.

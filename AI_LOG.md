@@ -64,7 +64,7 @@
 - Full test suite: 43 tests passed.
 - Limitation: urgency is manually assigned, and evidence-source count is only a rough proxy for evidence strength. Scores are prioritisation heuristics, not probabilities.
 
-### CEO Cockpit API and Question-Answering � 17 November 2026
+### CEO Cockpit API and Question-Answering — 17 November 2026
 
 #### 1. FastAPI backend
 - Implemented the FastAPI application in `backend/app/main.py`.
@@ -158,3 +158,67 @@
 - Avoided applying the forced downgrade without a verified compatible fix.
 - Ran `npm audit --omit=dev`; result: zero production vulnerabilities.
 - Current limitation: development dependency vulnerabilities remain unresolved and require monitoring for a compatible upstream patch.
+
+
+### Day 3 Evidence Ingestion and Risk Reconciliation — 18 November 2026
+
+#### 1. Day 3 ingestion
+- Created `backend/app/ingest_day3.py` to process the Day 3 release pack.
+- Successfully processed 14 files with no reported ingestion failures.
+- Included engineering records, Jira exports, incident data, email correspondence, launch documents and CEO/department transcripts.
+- Stored extracted content in the Day 3 processed evidence file.
+
+#### 2. Evidence review and reconciliation
+- Reviewed the Atlas Jira export and identified a formal GA date revision from 15 September 2026 to 15 December 2026, recorded on 2 September 2026.
+- Identified 62 Jira issues: 35 Done, 8 In Progress and 19 To Do. Outstanding issues were not automatically classified as GA blockers.
+- Reviewed the incident register and identified three August SEV1 routing-api incidents.
+- Compared the incident register with the on-call rota and preserved the unresolved distinction between "Sneha" and "Snehal".
+- Reviewed the SRE contractor invoice and treated it as evidence of a recorded monthly support charge, not proof of a budget overrun.
+- Reviewed the Atlas launch kit and distinguished prepared materials from unpublished or draft materials.
+- Reviewed T4, T5 and T6b transcripts and retained uncertainty around marketing metrics, engineering workload, audio gaps and the planned CRO reporting change.
+- Did not infer that Siddharth's departure caused the Atlas delay or that Git commit counts establish individual productivity.
+
+#### 3. Risk-engine update
+- Updated the Engineering risk to focus on Atlas delivery and reliability.
+- Added evidence retrieval for the Jira release-date revision and the three August SEV1 routing-api incidents.
+- Updated the risk explanation, recommended action and uncertainty statements.
+- Retained the existing heuristic scoring approach.
+- The risk score is a prioritisation heuristic, not a probability or statistically calibrated forecast.
+
+#### 4. Documentation
+- Appended Day 3 evidence reconciliation notes to `TRANSCRIPT_NOTES.md`.
+- Appended Day 3 assumptions and evidence limitations to `ASSUMPTIONS.md`.
+- Appended Day 3 implementation and product decisions to `DECISIONS.md`.
+- Added the T6b response to `CEO_VOICE_NOTE_RESPONSES.md`.
+- Documented the CRO reporting change as planned, not effective.
+- Recorded effective-dated organisational history as a future product requirement, not an implemented feature.
+
+#### 5. Testing status
+- Targeted risk-engine tests: 6 passed.
+- Full backend test suite: 53 passed.
+- One non-blocking Starlette/httpx deprecation warning remained.
+- Runtime verification was completed; see Section 7.
+
+#### 6. Human verification and responsibility
+- Reviewed extracted source records and compared transcript statements with structured records.
+- Reviewed the risk-engine changes and documented their evidence limitations.
+- Preserved ambiguous identities, incomplete information and unsupported causal claims rather than presenting them as facts.
+- Used AI assistance for code drafting, test guidance, evidence interpretation and documentation. Final responsibility for reviewing and validating the submitted implementation remains with the developer.
+
+#### 7. Runtime verification
+- Started the FastAPI backend and verified `GET /api/risks` successfully.
+- Confirmed the Engineering risk returns the revised Atlas GA date (15 September to 15 December 2026).
+- Confirmed all three August SEV1 routing-api incidents (INC-201, INC-203 and INC-205) appear with their source citations.
+- Verified the corrected risk explanation attributes incidents to the incident register, not Jira.
+- Started the React frontend and manually inspected the expanded Engineering risk evidence.
+- Confirmed the dashboard displays the Jira release-date record, all three incident records, and the supporting Day1/Day2 hiring and pulse evidence.
+- Re-ran the complete backend test suite: 53 passed, with one non-blocking deprecation warning.
+
+
+#### 8. Regression testing
+- Added a test confirming the Engineering risk includes the revised Atlas GA date and all three August SEV1 incident IDs.
+- Added a test confirming evidence collection requires every specified required term.
+- Complete backend test suite: 55 passed, with one non-blocking Starlette/httpx deprecation warning.
+- Frontend ESLint passed.
+- Frontend production build passed.
+- Git whitespace check passed; only line-ending warnings remain.

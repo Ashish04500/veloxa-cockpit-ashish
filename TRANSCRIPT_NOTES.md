@@ -61,3 +61,48 @@
 - Do not identify the unnamed engineer.
 - Do not present ambiguous attrition or hiring figures as established facts.
 - Treat the Engineering workload/capacity concern and Marketing handover concern as evidence-backed risks, not proven causal conclusions.
+
+
+## Day 3 — T4 Head of Marketing, T5 VP Engineering and T6b CEO Voice Note
+
+### T4: Head of Marketing Call
+
+- Nikhil described the September summit as a strong pipeline quarter, but this is a transcript claim and has not been independently validated against campaign or CRM data.
+- Nikhil mentioned marketing spend of "one point eight"; the unit and reporting period are unclear. Do not treat this as a verified financial figure.
+- Nikhil said the Atlas v3 launch kit had been ready since July and was waiting for an Engineering launch date.
+- Email dated 22 July from Siddharth confirms that the launch materials were prepared and a date was awaited from Engineering.
+- The Atlas Launch Kit document, dated 21 July, lists the sales deck, website page and customer email sequence as ready. The website page was unpublished, the press note was still a draft, and the launch date was TBC.
+- The T4 transcript says Marketing may report to the new CRO, but does not establish an approved effective date or confirmed reporting change.
+- The backfill owner for Siddharth's role remains unassigned in the transcript.
+
+### T5: VP Engineering Call
+
+- Vikram described Atlas v3 as on track but needing a possible buffer. This statement conflicts with the formal Jira release record, which shows the GA date changed from 15 September to 15 December 2026 on 2 September.
+- The Jira export contains 62 issues: 35 Done, 8 In Progress and 19 To Do. There are 27 unresolved issues representing 115 story points.
+- These unresolved issues are associated with the Atlas GA version, but the export does not establish that every unresolved issue is a GA blocker.
+- The incident register confirms three August SEV1 incidents affecting routing-api: INC-201, INC-203 and INC-205. All three list Sneha as responder.
+- Email dated 24 August from Sneha states that the third SEV1 incident that month led to pausing Atlas performance tickets to stabilise routing-api.
+- The on-call rota contains both Sneha and Snehal. Their identities must not be merged without corroborating evidence.
+- The rota shows changing primary and secondary assignments, but does not establish individual working hours or total workload.
+- The invoice for September confirms a monthly on-call SRE support retainer of ₹1,20,000 before tax. It does not establish a cost overrun or the contractor's identity in relation to Sneha or Snehal.
+- The 1 September email from Priya asks Vikram to discuss Atlas ownership. The reason and outcome are unknown.
+- The transcript has an audio gap from approximately 11:20 to 15:30. Do not infer what was discussed during that period.
+- Git commit counts are not a reliable measure of individual productivity, working hours or workload.
+
+### T6b: CEO Voice Note
+
+- CEO says Marketing will report to the new CRO, but gives two possible timings: next month or the month after.
+- Treat this as a planned organisational change with an uncertain effective date, not as an already completed reporting change.
+- The cockpit should support changes to reporting relationships without overwriting historical reporting information.
+- The new CRO's identity, exact effective date and final approval status are not established by this voice note.
+
+### Day 3 Evidence and Reconciliation Decisions
+
+- Prefer the Jira release record over the optimistic T5 transcript when reporting the formal Atlas GA date.
+- Report the revised GA date as 15 December 2026, changed on 2 September 2026 by Vikram.
+- Use the incident register to substantiate the three August SEV1 routing-api incidents.
+- Distinguish confirmed launch-kit components from full launch readiness. The website remained unpublished and the press note was a draft.
+- Do not claim that Siddharth's departure caused the Atlas delay. The available evidence does not establish that causal link.
+- Preserve the Sneha/Snehal identity discrepancy until independently resolved.
+- Do not infer employee productivity, overtime or individual workload from Git commit counts or on-call assignments alone.
+- Do not update current reporting relationships based solely on the uncertain T6b timing.
