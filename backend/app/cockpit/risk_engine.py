@@ -24,7 +24,8 @@ def collect_evidence(
             if release_days is not None
             else ["Day1", "Day2", "Day3"]
         ),
-        top_k=top_k
+        top_k=top_k,
+        source_filter=allowed_sources
     )
 
     selected = []
@@ -191,8 +192,8 @@ def get_top_risks():
                 "The Atlas GA release date was revised from "
                 "15 September to 15 December 2026 on 2 September "
                 "by Vikram. The incident register records three August "
-                "SEV1 incidents affecting routing-api, all assigned "
-                "to Sneha. Earlier evidence also shows two engineering "
+                "SEV1 incidents affecting routing-api. Earlier evidence "
+                "also shows two engineering "
                 "requisitions were paused and the engineering pulse "
                 "score declined to 3.1. Together, these indicate "
                 "delivery and reliability pressure."

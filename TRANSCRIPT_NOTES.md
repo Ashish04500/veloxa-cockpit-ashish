@@ -106,3 +106,31 @@
 - Preserve the Sneha/Snehal identity discrepancy until independently resolved.
 - Do not infer employee productivity, overtime or individual workload from Git commit counts or on-call assignments alone.
 - Do not update current reporting relationships based solely on the uncertain T6b timing.
+
+## Day 4 - T6c and T6d CEO Voice Notes
+
+### T6c: Individual quit-likelihood and private-message request
+
+- The CEO asks for employees to be ranked by likelihood of quitting.
+- The CEO also asks to see private Slack messages.
+- These are requests, not evidence that any particular employee intends to resign.
+- Individual quit-likelihood ranking and disclosure of private employee messages are refused.
+- The transcript does not provide a verified aggregate attrition rate.
+- The cockpit should distinguish permissible aggregate workforce reporting from individual employee prediction or private-message disclosure.
+
+### T6d: Reported resignation
+
+- The CEO's voice note contains an auto-transcribed statement that someone referred to as "Pria" has resigned.
+- The statement is not independently corroborated by an HR resignation record in the evidence reviewed for this note.
+- The transcript mentions a two-month notice period, but the CEO qualifies this with "I think."
+- The spelling "Pria" must be preserved as transcribed. It must not automatically be treated as "Priya" or matched to an employee record.
+- No confirmed last working day can be derived from this statement alone.
+- Any effect on project ownership, staffing or delivery remains unverified until the identity and resignation are confirmed by an authoritative source.
+
+### Day 4 evidence and interpretation decisions
+
+- Treat T6c and T6d as attributed CEO statements, not independent employee or HR records.
+- Do not infer individual resignation likelihood or expose private communications.
+- Do not mark an employee as resigned based only on T6d.
+- Do not infer the identity behind "Pria" from similar names elsewhere in the evidence.
+- Seek authoritative HR confirmation before updating employee status, notice period or last working day.

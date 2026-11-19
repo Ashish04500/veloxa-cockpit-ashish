@@ -115,3 +115,27 @@ def test_collect_evidence_requires_all_terms(monkeypatch):
 
     assert len(results) == 1
     assert "INC-201" in results[0]["evidence"]
+
+
+
+def test_collect_evidence_passes_source_filter_to_retriever(monkeypatch):
+    import app.cockpit.risk_engine as risk_engine
+
+    captured = {}
+
+    def fake_search(*args, **kwargs):
+        captured.update(kwargs)
+        return []
+
+    monkeypatch.setattr(risk_engine, "search_evidence", fake_search)
+
+    allowed = ["Incidents_Aug-Oct_2026.xlsx"]
+
+    collect_evidence(
+        query="incident",
+        allowed_sources=allowed,
+        top_k=1,
+    )
+
+    assert captured["source_filter"] == allowed
+    assert captured["top_k"] == 1

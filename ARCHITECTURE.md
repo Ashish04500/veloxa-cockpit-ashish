@@ -2,156 +2,270 @@
 
 ## 1. Objective
 
-Build an evidence-grounded AI cockpit for Veloxa Technologies. The CEO should be able to ask questions about company operations, interview 14 AI employee agents, and identify important business risks.
+Veloxa CXO Cockpit is an evidence-grounded executive dashboard for Veloxa Technologies.
 
-The system must cite supporting records, distinguish facts from assumptions, surface conflicting evidence, and refuse to present unsupported information as fact.
+It allows the CEO to:
+- View prioritized business risks.
+- Ask questions about company operations.
+- Receive answers supported by source evidence.
+- Inspect evidence references and source excerpts.
+- Identify uncertainty and distinguish documented facts from unverified claims.
 
-The architecture prioritizes reliability, explainability, data privacy and traceability over unnecessary infrastructure.
+The system prioritizes evidence traceability, privacy safeguards, explainability, and reliable handling of incomplete information.
 
-## 2. Proposed Technology Stack
+The current implementation is a working evidence-grounded CEO cockpit. It does not yet implement 14 independently conversational AI employee agents.
+
+## 2. Technology Stack
 
 | Layer | Technology | Purpose |
 |---|---|---|
-| Frontend | React | CEO cockpit and employee-agent interface |
+| Frontend | React, Vite, CSS | Executive dashboard and CEO Q&A interface |
 | Backend | Python, FastAPI | API endpoints and application logic |
-| Data processing | OpenPyXL, python-docx, pypdf, Python CSV | Extract and process source files |
-| Document storage | JSONL | Store extracted source documents |
-| Database | SQLite | Store normalized records and evidence metadata |
-| Retrieval | SQLite FTS5 initially | Search indexed source text |
-| AI | LLM API with a replaceable provider layer | Generate grounded answers and agent responses |
-| Testing | Pytest | Validate ingestion, retrieval, time filtering and answer quality |
+| Data extraction | OpenPyXL, python-docx, pypdf, Python CSV | Extract content from source documents |
+| Document storage | JSONL | Store extracted documents |
+| Evidence store | Python-based normalized evidence records | Preserve source metadata and searchable text |
+| Retrieval | Custom keyword-based retrieval | Find relevant evidence using tokens, synonyms, source weights and filters |
+| Answer engine | Python rule-based logic | Identify supported topics, apply safeguards and construct grounded answers |
+| Risk engine | Python heuristic scoring | Prioritize evidence-supported business risks |
+| Testing | Pytest | Validate ingestion, retrieval, API, privacy and risk behaviour |
 
-The current implementation uses OpenPyXL instead of Pandas for Excel processing because Pandas could not import successfully in the development environment due to a Windows Application Control restriction affecting NumPy compiled DLLs.
-
-The initial implementation will prioritize reliability and explainability. A vector database can be introduced if testing demonstrates that keyword-based retrieval is insufficient.
+OpenPyXL is used for Excel extraction rather than Pandas because of a Windows Application Control restriction affecting NumPy compiled DLL imports in the development environment.
 
 ### 2.1 Current Implementation Status
 
 | Component | Status |
 |---|---|
 | Project structure | Implemented |
-| Day 1 file ingestion | Implemented |
-| Excel, DOCX, PDF, CSV, TXT and EML readers | Implemented |
+| Day 1–Day 4 ingestion | Implemented |
+| Excel, DOCX, PDF, CSV, TXT and EML extraction | Implemented |
 | JSONL document storage | Implemented |
-| Initial 14 employee profiles | Implemented |
-| Initial transcript and evidence analysis | Completed |
-| Technical and evidence documentation | Initial version completed |
-| SQLite database | Planned |
-| SQLite FTS5 retrieval | Planned |
-| RAG and LLM integration | Planned |
-| Employee agent runtime | Planned |
-| CEO Q&A and risk engine | Planned |
-| React cockpit | Planned |
-| Automated testing | Initial 10 tests passing |
-
-Implementation status will be updated as components are developed and validated.
+| Normalized evidence store | Implemented |
+| 14 employee identity profiles | Implemented |
+| Keyword-based evidence retrieval | Implemented |
+| Source and release-day filtering | Implemented |
+| CEO Q&A for supported topics | Implemented |
+| Question-level privacy safeguards | Implemented |
+| Evidence citations and excerpts | Implemented |
+| Heuristic business risk ranking | Implemented |
+| React CEO dashboard | Implemented |
+| Automated test suite | Implemented |
+| Conversational employee-agent runtime | Planned |
+| LLM-based answer generation | Planned |
+| SQLite database and FTS5 | Planned |
+| Vector search and semantic retrieval | Planned |
+| Role-based authorization | Planned |
 
 ## 3. High-Level Architecture
 
 ```text
-Release Packs (Day 1–Day 4)
-          |
-          v
-    Ingestion Layer
-          |
-          v
- Extraction and Normalization
-          |
-          v
- Evidence and Company Database
-          |
-          +----------------------+
-          |                      |
-          v                      v
-   Retrieval / RAG          Risk Analysis
-          |                      |
-          v                      |
-    14 Employee Agents           |
-          |                      |
-          +----------+-----------+
-                     |
-                     v
-             CEO Answer Engine
-                     |
-                     v
-              React Cockpit
+          Release Packs (Day 1–Day 4)
+                       |
+                       v
+                Ingestion Layer
+                       |
+                       v
+             File Extraction Layer
+                       |
+                       v
+               JSONL Documents
+                       |
+                       v
+               Evidence Store
+                       |
+             +---------+---------+
+             |                   |
+             v                   v
+       Evidence Retrieval    Risk Engine
+             |                   |
+             v                   |
+        CEO Answer Engine <------+
+             |
+             v
+          FastAPI
+             |
+             v
+        React Dashboard
 ```
 
-**Implementation note:** This diagram represents the target architecture. The current implementation has completed initial Day 1 ingestion, document extraction, JSONL storage, employee roster selection and initial employee profile generation. The remaining components are planned development stages.
+The current application uses a shared evidence store for Q&A and risk analysis.
+
+The diagram represents the implemented application flow. Conversational employee agents, vector databases and LLM orchestration are not part of the current runtime.
 
 ## 4. Data Ingestion
 
-The ingestion layer processes source files released each day.
+The ingestion layer processes source files released in four daily release packs.
 
-Supported source formats:
+| Release | Documents processed |
+|---|---:|
+| Day 1 | 15 |
+| Day 2 | 10 |
+| Day 3 | 14 |
+| Day 4 | 2 |
+| **Total** | **41** |
 
-- Excel: employee, payroll, finance and operational exports.
-- Word: transcripts, briefs and CEO voice notes.
-- PDF: board updates, invoices, letters and other documents.
-- EML: email records.
-- CSV: engineering and operational exports.
-- TXT: data-room instructions and metadata.
+The current ingestion pipeline supports:
 
-Every extracted record preserves:
+- Excel workbooks through OpenPyXL.
+- Word documents through python-docx.
+- PDF documents through pypdf.
+- CSV files through Python's built-in CSV module.
+- TXT and EML files through built-in file reading.
 
+Extracted documents are stored in:
+
+`data/processed/`
+
+Each JSONL record preserves:
 - Source filename.
-- Source relative path.
-- Source file type.
+- Relative source path.
+- File type.
 - Release day.
 - Extracted content.
 - Ingestion status.
-- Extraction error details, when applicable.
 
-Future ingestion improvements will add:
+The Day 4 ingestion script processes the newly released files and writes its output atomically using a temporary file before replacing the processed JSONL output.
 
-- Relevant event date.
-- Extraction timestamp.
-- Page, sheet, row or other source location.
-- Normalized structured values.
-- Validation and reconciliation metadata.
+The original source files remain unchanged.
 
-The original source files must remain unchanged.
+### 4.1 Evidence Store
 
-### 4.1 Current Ingestion Implementation
+The evidence store loads all successfully processed JSONL documents and normalizes their content into evidence records.
 
-The current file reader uses:
+The latest verified local dataset contains:
 
-- OpenPyXL for Excel extraction.
-- python-docx for Word document paragraphs and tables.
-- pypdf for PDF text extraction.
-- Python's built-in CSV module for CSV files.
-- Built-in file reading for TXT and EML files.
+- 41 processed documents.
+- 339 normalized evidence records.
+- 2 evidence records originating from Day 4.
 
-Extracted documents are stored as JSONL records under `data/processed/`.
+Each evidence record includes source metadata, release day, file type, locator, status, and extracted text.
 
-Day 1 ingestion successfully processed 15 files, including Excel workbooks, PDFs, Word documents and emails.
+The evidence store is currently loaded through Python application logic. A persistent relational database has not yet been implemented.
 
-## 5. Core Data Model
+## 5. Evidence Retrieval
 
-The planned database will contain the following entities:
+The current retrieval engine uses keyword-based matching rather than embedding-based semantic search.
 
-| Entity | Purpose |
-|---|---|
-| employees | Employee identity, department, role and employment status |
-| sources | Source file metadata and release information |
-| evidence | Extracted facts linked to original sources |
-| events | Dated company events and activities |
-| financial_records | Normalized financial transactions and metrics |
-| agent_profiles | The 14 employee-agent profiles |
-| assumptions | Invented or uncertain information with confidence and evidence |
-| conflicts | Conflicting claims and their resolution status |
-| agent_memory | Relevant, source-grounded agent context |
-| audit_log | Questions, retrievals and answer provenance |
+Its retrieval process includes:
 
-Evidence records must be traceable to their original sources.
+1. Tokenizing the CEO's question.
+2. Expanding selected terms using configured synonyms.
+3. Matching query terms against evidence text.
+4. Applying source weighting.
+5. Applying a recency bonus where relevant.
+6. Applying source and release-day filters when requested.
+7. Returning ranked evidence records.
 
-Conflicting claims must not be silently overwritten. The system should retain the original claims, their sources and the reasoning behind any resolution.
+The retriever supports source filtering before the final top-k selection.
 
-The database model is planned and will be implemented as the application evolves.
+The Atlas-related Q&A path can search both Day 3 and Day 4 evidence by default, while explicit release-day filters can restrict retrieval.
 
-## 6. Initial Employee-Agent Scope
+### Current limitations
 
-The first 14 agents will be selected from the employee export.
+- Retrieval is keyword-based, not vector-based.
+- Synonym expansion is manually configured.
+- Keyword overlap can miss relevant evidence expressed using different terminology.
+- A retrieval score is not a measure of factual certainty.
+- Release-day filtering does not constitute a complete historical event database.
+
+A vector search system may be introduced later if evaluation demonstrates that keyword retrieval is insufficient.
+
+## 6. CEO Question Answering
+
+The CEO answer engine is implemented using Python rules and supported-topic logic.
+
+The current flow is:
+
+1. Validate the question.
+2. Apply question-level privacy and safety checks.
+3. Identify a supported topic.
+4. Retrieve relevant evidence.
+5. Apply topic-specific evidence filters.
+6. Check whether the required evidence is available.
+7. Construct an answer with evidence references and confidence information.
+8. Return an appropriate response status.
+
+The current answer engine supports selected topics, including:
+
+- Engineering hiring status.
+- Monthly company burn.
+- Engineering pulse.
+- Siddharth's resignation.
+- Atlas version-three resignation impact.
+- Atlas version-three work ownership.
+
+The API exposes:
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/` | GET | Health/root response |
+| `/api/risks` | GET | Retrieve prioritized risks |
+| `/api/ask` | POST | Submit a CEO question |
+
+The answer engine is not currently powered by an LLM. It uses predefined topic handling, evidence selection and answer construction.
+
+Unsupported questions return an insufficient-evidence response rather than an invented answer.
+
+### 6.1 Evidence and Confidence
+
+Answers can include:
+- Answer status.
+- Confidence assessment.
+- Supporting evidence.
+- Source filename.
+- Source location.
+- Release day.
+- Citation and source excerpt.
+
+The system distinguishes between documented information and uncertain claims.
+
+For example, machine-generated voice-note transcripts are treated cautiously. A name appearing in a transcript is not automatically assumed to identify an employee with a similar name in another source.
+
+The current implementation has topic-specific safeguards rather than a general-purpose automated conflict-resolution engine.
+
+## 7. Risk Analysis
+
+The risk engine collects evidence from approved sources and constructs prioritized business risks.
+
+Current risk areas include:
+- Engineering capacity and delivery.
+- Funding and runway.
+- Marketing continuity and knowledge transfer.
+
+Risk prioritization uses heuristic logic informed by factors such as:
+- Business impact.
+- Urgency.
+- Evidence availability.
+- Source coverage.
+- Relevant operational signals.
+
+The resulting score is a rule-based prioritization score, not a probability of an event occurring.
+
+Evidence strength and source coverage should not be interpreted as independent corroboration.
+
+Each risk includes supporting evidence to help the CEO inspect the underlying records.
+
+## 8. Privacy and Safety
+
+The application includes question-level safeguards to prevent certain sensitive or unsupported requests from being answered.
+
+Examples include:
+- Requests for individual salary information.
+- Requests for private employee messages.
+- Requests for individual pulse comments or scores.
+- Requests to identify an unnamed employee.
+- Requests to rank employees by likelihood of quitting or resigning.
+
+The system can still handle appropriate aggregate workforce questions when evidence supports them.
+
+For example, an aggregate attrition-rate question is not automatically treated as a prohibited individual prediction. If the required data is missing, the engine returns insufficient evidence.
+
+These are application-level question safeguards, not a complete authorization system.
+
+Role-based access control, authenticated user permissions, database-level restrictions and comprehensive audit logging remain future requirements before deployment with real sensitive company data.
+
+## 9. Employee-Agent Scope
+
+The initial employee roster contains 14 selected profiles from the employee master export.
 
 | Department | Count |
 |---|---:|
@@ -161,180 +275,150 @@ The first 14 agents will be selected from the employee export.
 | Marketing | 3 |
 | **Total** | **14** |
 
-Employee identity and employment status will come from `Employee_Master.xlsx`.
+Employee identity and employment information are derived from the employee master export.
 
-Each employee profile will distinguish:
+The current implementation includes employee identity profiles but does not yet provide 14 independently conversational agents.
 
-- Verified identity and employment facts.
-- Work context supported by source records.
-- Personal-life details explicitly marked as assumptions.
-- Evidence sources.
-- Unresolved information.
+Future agent functionality may include:
+- Shared agent runtime.
+- Evidence-grounded employee context.
+- Approved profile-specific access.
+- Conversation handling.
+- Source-backed responses.
+- Agent memory and auditability.
 
-Personality, personal-life details and private thoughts that are not present in the data must not be presented as verified facts. Any fictional assumptions must be explicitly labeled and recorded in `ASSUMPTIONS.md`.
+Personal thoughts, personality traits and private-life information must not be presented as verified facts without supporting evidence.
 
-A shared agent runtime will serve all 14 profiles. Each agent will receive only relevant company evidence and its own approved profile context.
+## 10. Point-in-Time and Evidence Limitations
 
-### 6.1 Current Agent Implementation
+The system preserves release-day metadata and supports release-day filtering in retrieval.
 
-The initial employee roster and 14 identity profiles have been generated using the employee master export.
+However, a complete point-in-time data model has not yet been implemented.
 
-The current profiles contain employee identity, department, role, manager, joining date, location and employment status.
-
-Richer work histories, agent memory, personality assumptions and conversational behaviour remain planned development tasks.
-
-## 7. Evidence-Grounded Question Answering
-
-For each CEO question, the planned answer engine will:
-
-1. Identify the subject and relevant time period.
-2. Retrieve relevant structured records and source passages.
-3. Apply release-date and access-control filters.
-4. Check for conflicting or incomplete evidence.
-5. Generate a concise answer using retrieved evidence.
-6. Attach citations and a confidence assessment.
-7. State clearly when available evidence is insufficient.
-
-The LLM must not be treated as the source of company facts. Retrieved evidence is the source of truth.
-
-Answers should distinguish verified facts, reasonable inferences, assumptions and unknowns.
-
-## 8. Conflict Resolution
-
-When sources disagree, the system will retain both claims and record:
-
-- The competing claims.
-- Their source files and locations.
-- The reliability and limitations of each source.
-- The resolution or unresolved status.
-- The reasoning behind the decision.
-- Confidence in the conclusion.
-
-A source will not automatically win merely because it is newer or machine-readable.
-
-The decision must consider the type of information, source reliability, date and available corroborating evidence.
-
-Machine-generated transcripts require additional caution because names, numbers, units and speaker attribution may be inaccurate.
-
-## 9. Point-in-Time Data Control
-
-Every source will have a release date. Where available, records will also have an event date.
-
-For a question such as "What did we know on 17 November?", retrieval must exclude information released after 17 November, even if that information describes an earlier event.
-
-This prevents future information from leaking into historical answers.
-
-The system will distinguish:
+A fully historical system would need to distinguish:
 
 - Event date: When something happened.
-- Source date: When the source was created.
-- Release date: When the information became available to the system.
+- Source date: When a source was created.
+- Release date: When information became available to the system.
 
-Point-in-time filtering will be validated through automated tests.
+This distinction is important when answering questions about what the company knew at a particular historical point.
 
-## 10. Risk Analysis
+Future development should also improve source-level location metadata, structured date extraction and historical validation.
 
-The risk engine will identify and rank risks using:
+## 11. Frontend
 
-- Business impact.
-- Likelihood.
-- Urgency.
-- Evidence strength.
-- Uncertainty.
-- Relevant owners or departments.
+The React and Vite frontend provides the executive dashboard.
 
-Each risk must include supporting evidence and explain why it matters.
+Implemented functionality includes:
+- CEO dashboard overview.
+- Prioritized risk cards.
+- Risk evidence inspection.
+- CEO question input.
+- API-based answer submission.
+- Answer status and confidence display.
+- Supporting evidence and source excerpts.
+- Loading and error states.
 
-Unsupported speculation must not be presented as a confirmed risk.
+The frontend communicates with the FastAPI backend through the configured API proxy during local development.
 
-Risks should be categorized as confirmed, potential or requiring further investigation, depending on the strength of available evidence.
-
-## 11. Privacy and Access Control
-
-Sensitive employee information, especially individual payroll figures, must be protected at the application and database-query layers.
-
-CEO-facing financial answers should use permitted aggregate figures rather than exposing individual salary details.
-
-Prompt instructions alone are not sufficient security controls.
-
-Additional safeguards will include:
-
-- Access restrictions for employee-level records.
-- Role-based authorization where required.
-- Restricted access to sensitive financial information.
-- Audit logging for sensitive queries.
-- Exclusion of raw and processed source data from public Git repositories.
-
-Raw release files and processed source data are excluded from Git using `.gitignore`.
-
-Application-level authorization and database-level access restrictions remain required before exposing sensitive records.
+The dashboard is designed to make evidence inspection part of the answer workflow rather than treating generated answers as unquestionable facts.
 
 ## 12. Testing Strategy
 
-Automated tests will cover:
+The project includes automated tests covering:
 
-- File extraction and ingestion.
-- Data normalization and validation.
-- Evidence-to-source traceability.
-- Conflict detection.
-- Point-in-time filtering.
-- Employee-agent identity grounding.
-- Citation correctness.
-- Risk ranking.
-- Privacy and access restrictions.
-- Unsupported-question refusal and uncertainty handling.
+- Document ingestion.
+- Evidence-store construction.
+- Retrieval and source filtering.
+- Release-day filtering.
+- Supported-topic identification.
+- Answer construction.
+- Privacy refusal behaviour.
+- Insufficient-evidence handling.
+- Risk construction and ranking.
+- API responses and validation.
 
-The final target is at least 25 automated tests, including at least 5 tests for uncertainty or refusal behaviour.
+The latest verified full backend test run completed with:
 
-### 12.1 Current Test Coverage
+**81 passed, 1 warning.**
 
-The initial test suite contains 10 passing tests covering:
+The warning relates to a Starlette/httpx deprecation notice and does not indicate a test failure.
 
-- Day 1 document count.
-- Successful ingestion status.
-- Duplicate source-path detection.
-- Employee master record count.
-- Correct selection of 14 employee agents.
-- Unique employee IDs.
-- Valid agent departments.
-- Inclusion of the notice-period employee.
-- Board PDF text extraction.
-- Preservation of the blank Entity Resolution template.
+The repository currently contains seven test files.
 
-Further tests will be added as retrieval, agent behaviour, historical filtering and risk analysis are implemented.
+The latest privacy regression check also verified that individual employee quit-likelihood ranking requests are refused while an unsupported aggregate attrition-rate question returns insufficient evidence.
 
-## 13. Key Design Principles
+Frontend production build has also passed in the development environment.
+
+Test results should be re-run before final submission.
+
+## 13. Development and Execution
+
+The project uses a PowerShell startup script:
+
+`run.ps1`
+
+The startup script:
+- Checks required release folders.
+- Reuses the existing Python environment and frontend dependencies.
+- Checks whether processed documents require ingestion.
+- Supports forced re-ingestion.
+- Starts the FastAPI backend.
+- Starts the Vite frontend.
+- Checks application availability.
+- Stores process logs under `logs/`.
+
+Start the application from the project root:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run.ps1
+```
+
+The local application URLs are:
+
+- Frontend: `http://127.0.0.1:5173/`
+- Backend: `http://127.0.0.1:8000/`
+- API documentation: `http://127.0.0.1:8000/docs`
+
+## 14. Future Development
+
+The following capabilities remain potential future improvements rather than completed functionality:
+
+1. SQLite persistence and structured database models.
+2. SQLite FTS5 or another indexed retrieval layer.
+3. Embedding-based semantic retrieval.
+4. LLM integration with a replaceable provider layer.
+5. Conversational runtime for the 14 employee agents.
+6. More comprehensive conflict detection and resolution.
+7. Full event-date and point-in-time historical filtering.
+8. Authentication and role-based access control.
+9. Comprehensive audit logging.
+10. Expanded integration and end-to-end testing.
+
+These capabilities should only be marked implemented after development and validation.
+
+## 15. Key Design Principles
 
 1. Evidence before generated answers.
 2. Preserve source provenance.
-3. Never silently resolve conflicting information.
-4. Keep assumptions separate from verified facts.
-5. Enforce historical release-date boundaries.
+3. Never silently treat uncertain claims as verified facts.
+4. Keep assumptions separate from documented information.
+5. Apply release-day filters when appropriate.
 6. Protect sensitive employee information.
-7. Use a shared, maintainable agent runtime.
+7. Make risk prioritization explainable.
 8. Communicate uncertainty clearly.
-9. Prefer a working, explainable system over unnecessary complexity.
+9. Prefer a working, maintainable system over unnecessary infrastructure.
 10. Validate important behaviour through automated tests.
 
-## 14. Implementation Plan
-
-- Phase 1: Inspect release packs and define the data model.
-- Phase 2: Build ingestion and evidence storage.
-- Phase 3: Implement retrieval and source citations.
-- Phase 4: Implement the 14 employee agents.
-- Phase 5: Build CEO Q&A and risk analysis.
-- Phase 6: Build the React cockpit.
-- Phase 7: Add automated tests and process new releases.
-- Phase 8: Validate CEO voice-note responses and final setup instructions.
-
-## 15. Development and Repository Guidelines
+## 16. Repository Guidelines
 
 - Keep raw source files and processed confidential data out of Git.
-- Maintain documentation as implementation decisions change.
+- Keep documentation aligned with actual implementation.
 - Record AI assistance in `AI_LOG.md`.
-- Record assumptions and their evidence in `ASSUMPTIONS.md`.
+- Record assumptions in `ASSUMPTIONS.md`.
 - Record transcript conflicts and source reconciliation in `TRANSCRIPT_NOTES.md`.
-- Keep technical decisions documented in `DECISIONS.md`.
-- Do not mark planned functionality as implemented until it has been developed and tested.
+- Keep technical decisions in `DECISIONS.md`.
+- Do not describe planned features as implemented.
+- Preserve original release-pack files.
 
-The project is under active development as part of the Veloxa CXO Cockpit Hackathon, November 2026.
+The project is being developed as part of the Veloxa CXO Cockpit Hackathon, November 2026.

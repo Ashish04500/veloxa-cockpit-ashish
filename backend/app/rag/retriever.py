@@ -28,7 +28,7 @@ SYNONYMS = {
     "pulse": {"engagement", "survey"},
     "engagement": {"pulse", "survey"},
     "hiring": {"requisition", "requisitions", "recruitment"},
-    "paused": {"pause", "hold", "on"},
+    "paused": {"pause", "hold"},
     "pause": {"paused", "hold"},
     "burn": {"spending", "expense", "expenses"},
 }
@@ -115,7 +115,8 @@ def search_evidence(
     query,
     release_days=None,
     top_k=5,
-    min_score=1
+    min_score=1,
+    source_filter=None
 ):
     """
     Retrieve evidence using weighted keyword matching.
@@ -149,6 +150,12 @@ def search_evidence(
             continue
 
         if item["source_file"] in EXCLUDED_FILES:
+            continue
+
+        if source_filter is not None and not any(
+            allowed.lower() in item["source_file"].lower()
+            for allowed in source_filter
+        ):
             continue
 
         document_terms = tokenize(item["text"])

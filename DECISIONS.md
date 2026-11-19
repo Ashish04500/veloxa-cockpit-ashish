@@ -172,3 +172,47 @@ Siddharth Mehta's departure is confirmed. The cockpit may flag a potential marke
 **Reason:** T4 and T5 contain unverified claims, and T5 has an audio gap from 11:20 to 15:30.
 
 **Implementation:** Prefer structured primary records for formal dates and incident counts, while retaining transcript claims as attributed statements.
+
+## Day 4 Decisions
+
+### 1. Individual Quit-Likelihood Requests
+**Decision:** Refuse requests to rank individual employees by likelihood of quitting or resigning.
+
+**Reason:** The available evidence does not justify individual predictions, and such rankings create unsupported personal inferences.
+
+**Implementation:** Requests using variations of individual quit-likelihood ranking language are handled by the question-safety checks.
+
+### 2. Private Employee Communications
+**Decision:** Do not disclose private Slack messages or other private employee communications through the CEO question-answering interface.
+
+**Reason:** A CEO request alone does not establish that private communications are appropriate evidence for disclosure.
+
+**Implementation:** Such requests are refused rather than answered through evidence retrieval.
+
+### 3. T6d Resignation Claim
+**Decision:** Treat the reported resignation of "Pria" as an unverified transcript claim.
+
+**Reason:** T6d is an auto-transcribed CEO voice note and is not, by itself, an authoritative HR resignation record.
+
+**Limitation:** Do not update employee status, notice period or last working day based only on this statement.
+
+### 4. Employee Identity Resolution
+**Decision:** Preserve "Pria" as transcribed and do not automatically match it to "Priya" or another employee.
+
+**Reason:** Similar names do not establish identity.
+
+**Required confirmation:** An authoritative employee record or direct HR confirmation.
+
+### 5. Notice Period
+**Decision:** Treat the reported two-month notice period as uncertain.
+
+**Reason:** The CEO qualifies the statement with "I think."
+
+**Limitation:** Do not calculate a confirmed last working day from this estimate.
+
+### 6. Evidence Attribution
+**Decision:** Keep CEO voice-note statements distinct from independently verified HR facts.
+
+**Reason:** A transcript records what a speaker said; it does not independently verify the underlying event.
+
+**Implementation:** Preserve source attribution, uncertainty and the need for corroboration in answers and documentation.

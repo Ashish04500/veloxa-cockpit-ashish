@@ -8,6 +8,11 @@ function App() {
   const [error, setError] = useState('')
   const [lastUpdated, setLastUpdated] = useState(null)
   const [apiConnected, setApiConnected] = useState(false)
+  const [question, setQuestion] = useState('')
+  const [asking, setAsking] = useState(false)
+  const [answerResult, setAnswerResult] = useState(null)
+  const [askError, setAskError] = useState('')
+  const [selectedRiskEvidence, setSelectedRiskEvidence] = useState(null)
 
   const currentHour = new Date().getHours()
 
@@ -37,6 +42,39 @@ function App() {
       setError(err.message || 'Unable to load risk data.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function submitQuestion(event) {
+    event.preventDefault()
+
+    const trimmedQuestion = question.trim()
+    if (!trimmedQuestion || asking) return
+
+    setAsking(true)
+    setAskError('')
+    setAnswerResult(null)
+
+    try {
+      const response = await fetch('/api/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: trimmedQuestion }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.detail || `Request failed: ${response.status}`)
+      }
+
+      setAnswerResult(data)
+    } catch (err) {
+      setAskError(err.message || 'Unable to get an answer.')
+    } finally {
+      setAsking(false)
     }
   }
 
@@ -152,6 +190,119 @@ function App() {
           </div>
         </section>
 
+        <section className="assistant-section">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">EVIDENCE-GROUNDED Q&A</p>
+              <h2>Ask the CEO Intelligence Assistant</h2>
+              <p className="subtitle">
+                Ask about business decisions, operational risks and supporting records.
+              </p>
+            </div>
+          </div>
+
+          <form className="assistant-form" onSubmit={submitQuestion}>
+            <textarea
+              value={question}
+              onChange={event => setQuestion(event.target.value)}
+              placeholder="Example: What does Pria's reported resignation mean for Version 3?"
+              maxLength={1000}
+              rows={3}
+              disabled={asking}
+            />
+            <div className="assistant-form-footer">
+              <span>{question.length}/1000 characters</span>
+              <button
+                type="submit"
+                disabled={asking || !question.trim()}
+              >
+                {asking ? 'Analyzing evidence...' : 'Ask question'}
+              </button>
+            </div>
+          </form>
+
+          {asking && (
+            <p className="message">Searching approved evidence and preparing an answer...</p>
+          )}
+
+          {askError && (
+            <div className="assistant-error">
+              <strong>Unable to answer</strong>
+              <p>{askError}</p>
+            </div>
+          )}
+
+          {answerResult && (
+            <div className="assistant-result">
+              <div className="assistant-result-header">
+                <span className="assistant-status">
+                  {(answerResult.status || 'unknown').replaceAll('_', ' ').toUpperCase()}
+                </span>
+                {answerResult.confidence && (
+                  <span className="assistant-confidence">
+                    CONFIDENCE: {answerResult.confidence}
+                  </span>
+                )}
+              </div>
+
+              <div className="assistant-answer">
+                <h3>Assessment</h3>
+                <p>
+                  {answerResult.answer ||
+                    answerResult.reason ||
+                    answerResult.message ||
+                    'No answer text was returned.'}
+                </p>
+              </div>
+
+              {answerResult.evidence?.length > 0 && (
+                <details className="evidence-details">
+                  <summary>
+                    Supporting evidence ({answerResult.evidence.length} records)
+                  </summary>
+
+                  {answerResult.evidence.map((item, index) => (
+                    <div
+                      className="evidence-item"
+                      key={`${item.source || 'source'}-${index}`}
+                    >
+                      <details>
+                        <summary className="evidence-source-link">
+                          {item.source || 'Source record'}
+                        </summary>
+                        <div className="evidence-meta">
+                          {item.citation && <span>{item.citation}</span>}
+                          <span>
+                            {item.release_day || 'Release day unavailable'}
+                            {item.location ? ` | ${item.location}` : ''}
+                          </span>
+                        </div>
+                        <p>
+                          {item.excerpt || item.evidence || item.text ||
+                            'Evidence excerpt unavailable.'}
+                        </p>
+                      </details>
+                    </div>
+                  ))}
+
+                </details>
+              )}
+
+              {answerResult.status === 'insufficient_evidence' && (
+                <p className="assistant-note">
+                  The available approved records are not sufficient to support this answer.
+                </p>
+              )}
+
+              {answerResult.status === 'refused' && (
+                <p className="assistant-note">
+                  This request cannot be answered under the cockpit's privacy safeguards.
+                </p>
+              )}
+            </div>
+          )}
+        </section>
+
         <section className="risk-section">
           <div className="section-heading">
             <div>
@@ -209,7 +360,7 @@ function App() {
                       <strong>
                         {risk.score}<small>/22</small>
                       </strong>
-                      <span>RISK SCORE</span>
+                      <span>HEURISTIC SCORE</span>
                     </div>
                   </div>
 
@@ -241,6 +392,12 @@ function App() {
                     </div>
                   </div>
 
+                  <p className="risk-method-note">
+                    Rule-based prioritisation score, not a probability.
+                    Evidence strength counts distinct source files, not
+                    independent corroboration.
+                  </p>
+
                   <div className="risk-content">
                     <h4>Why this matters</h4>
                     <p>{risk.explanation}</p>
@@ -266,11 +423,45 @@ function App() {
                         className="evidence-item"
                         key={`${item.citation}-${index}`}
                       >
-                        <strong>{item.source}</strong>
+                        <button
+                          type="button"
+                          className="evidence-source-link"
+                          aria-expanded={selectedRiskEvidence === item}
+                          onClick={() =>
+                            setSelectedRiskEvidence(current =>
+                              current === item ? null : item
+                            )
+                          }
+                        >
+                          {item.source || 'Source record'}
+                        </button>
                         <span>{item.citation}</span>
                         <p>{item.evidence}</p>
                       </div>
                     ))}
+
+                    {selectedRiskEvidence && (
+                      <div className="evidence-preview">
+                        <div className="evidence-preview-header">
+                          <strong>Evidence preview</strong>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedRiskEvidence(null)}
+                          >
+                            Close
+                          </button>
+                        </div>
+                        <span>{selectedRiskEvidence.citation}</span>
+                        <pre>
+                          {selectedRiskEvidence.evidence ||
+                            'Evidence excerpt unavailable.'}
+                        </pre>
+                        <p>
+                          This is the evidence excerpt attached to this risk,
+                          not the complete original source file.
+                        </p>
+                      </div>
+                    )}
                   </details>
                 </article>
               ))}

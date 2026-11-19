@@ -1,4 +1,4 @@
-﻿
+
 # CEO Voice Note Responses
 
 ## T6a — Proactive Top-Three Risk Summary
@@ -106,3 +106,71 @@ Until implemented, the system must not silently overwrite current employee-manag
 ### Product decision
 
 Organisational changes must be represented with effective dates and retained history. The cockpit should distinguish proposed, approved and effective changes, preventing future organisational plans from being presented as current facts.
+
+## T6c - Individual Quit-Likelihood and Private-Message Request
+
+### CEO's request
+
+The CEO asks for employees to be ranked by likelihood of quitting and requests access to private Slack messages.
+
+### Response
+
+The cockpit does not rank individual employees by predicted likelihood of resignation and does not expose private employee communications.
+
+The request itself is not evidence that any employee intends to leave. The system should not infer individual resignation likelihood from indirect signals or private communications.
+
+### Recommended cockpit behaviour
+
+1. Refuse individual quit-likelihood ranking requests.
+2. Refuse requests to expose private Slack messages.
+3. Allow appropriately supported aggregate workforce reporting, subject to privacy safeguards.
+4. Return insufficient evidence when an aggregate attrition measure cannot be established from reliable records.
+5. Explain the boundary clearly rather than silently returning unrelated evidence.
+
+### Verification
+
+- Runtime checks confirmed that multiple individual quit-likelihood ranking phrasings return a refusal.
+- Private-message requests are covered by the question-safety checks.
+- Aggregate attrition-rate questions are not automatically classified as individual prediction requests.
+
+### Product decision
+
+The cockpit supports evidence-based workforce risk oversight, not individual employee surveillance or unsupported predictions about personal intentions.
+
+
+## T6d - Reported Resignation of "Pria"
+
+### CEO's statement
+
+The T6d auto-transcribed voice note reports that an individual referred to as "Pria" has resigned and mentions a possible two-month notice period.
+
+### Response
+
+This statement is treated as an unverified report, not a confirmed HR event.
+
+The transcript does not establish:
+- The individual's confirmed identity.
+- Whether an authoritative resignation record exists.
+- Whether the notice period is actually two months.
+- The employee's confirmed last working day.
+- Any resulting change in project ownership or delivery responsibility.
+
+The notice-period statement is explicitly uncertain because the speaker says "I think."
+
+### Recommended cockpit behaviour
+
+1. Preserve the name exactly as transcribed: "Pria."
+2. Do not automatically match the name to an employee named Priya.
+3. Do not mark an employee as resigned based only on this voice note.
+4. Request confirmation from an authoritative HR record or authorised HR representative.
+5. Do not calculate a confirmed last working day until the identity, resignation date and notice period are verified.
+
+### Evidence and confidence
+
+**Source:** `T6d_CEO_Voice_Note.docx`.
+
+**Confidence:** High that the transcript contains this CEO statement; insufficient evidence to treat the reported resignation, identity or notice period as independently verified facts.
+
+### Product decision
+
+CEO voice notes are evidence of what the CEO stated. They must not silently override authoritative employee records or be presented as independently confirmed HR events.

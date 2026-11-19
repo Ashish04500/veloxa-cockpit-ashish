@@ -89,3 +89,45 @@ def test_payroll_records_never_appear_in_general_search():
         "Payroll" not in item["source_file"]
         for item in results
     )
+
+
+def test_source_filter_applies_before_top_k(monkeypatch):
+    import rag.retriever as retriever
+
+    monkeypatch.setattr(
+        retriever,
+        "build_evidence_store",
+        lambda: [
+            {
+                "source_file": "Unrelated_High_Score.xlsx",
+                "release_day": "Day3",
+                "locator": "row-1",
+                "text": "alpha alpha alpha alpha",
+            },
+            {
+                "source_file": "Allowed_Source.xlsx",
+                "release_day": "Day3",
+                "locator": "row-2",
+                "text": "alpha",
+            },
+        ],
+    )
+
+    results = retriever.search_evidence(
+        "alpha",
+        release_days=["Day3"],
+        top_k=1,
+        source_filter=["Allowed_Source.xlsx"],
+    )
+
+    assert len(results) == 1
+    assert results[0]["source_file"] == "Allowed_Source.xlsx"
+
+
+def test_paused_synonyms_do_not_add_stop_word_on():
+    from rag.retriever import expand_query_terms
+
+    expanded = expand_query_terms({"paused"})
+
+    assert expanded == {"paused", "pause", "hold"}
+    assert "on" not in expanded

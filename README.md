@@ -21,7 +21,7 @@ The cockpit aims to help the CEO:
 ### Backend
 - FastAPI application with health-check and risk-summary endpoints.
 - Document ingestion for PDF, DOCX, XLSX, CSV, TXT and EML.
-- Day 1 and Day 2 release-pack ingestion.
+- Day 1 through Day 4 release-pack ingestion.
 - JSONL-based processed document storage.
 - Evidence retrieval with source references and citations.
 - Profiles for 14 employees with available, evidence-backed context.
@@ -160,6 +160,7 @@ The Vite development server proxies `/api` requests to the backend.
 |---|---|---|
 | GET | `/` | Backend health check |
 | GET | `/api/risks` | Retrieve the top three ranked risks |
+| POST | `/api/ask` | Ask an evidence-backed CEO question |
 
 ## Testing
 
@@ -169,7 +170,7 @@ Run the backend test suite from the project root:
 backend/venv/Scripts/python.exe -m pytest -q
 ```
 
-Latest verified backend result: **53 tests passed**.
+Latest verified backend result: **81 tests passed**, with one non-blocking Starlette deprecation warning.
 
 Run frontend checks from the `frontend` directory:
 
@@ -207,3 +208,16 @@ Both checks have passed.
 - `DECISIONS.md` — Technical and product decisions.
 - `AI_LOG.md` — AI assistance and human verification.
 - `CEO_VOICE_NOTE_RESPONSES.md` — Written responses to CEO voice notes.
+
+### Recommended startup
+Run both services from the repository root:
+
+`powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run.ps1`
+
+The script creates the Python environment and installs dependencies when needed, ingests Day 1 to Day 4 data when processed files are missing, and starts the backend and frontend.
+
+Useful options:
+- `-Reingest`: re-ingest all four release packs.
+- `-InstallDependencies`: reinstall backend and frontend dependencies.
+
+The script writes service output and error logs to `logs/`.

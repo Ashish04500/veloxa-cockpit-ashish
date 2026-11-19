@@ -222,3 +222,35 @@
 - Frontend ESLint passed.
 - Frontend production build passed.
 - Git whitespace check passed; only line-ending warnings remain.
+
+### Day 4 Evidence Ingestion and Privacy Safeguards - 19 November 2026
+
+#### 1. Day 4 ingestion
+- Added `backend/app/ingest_day4.py` to process the Day 4 release pack.
+- Processed the two available source files: `T6c_CEO_Voice_Note.docx` and `T6d_CEO_Voice_Note.docx`.
+- Ingestion completed with two successful files and no reported failures.
+- Confirmed that the combined evidence store loads 41 documents across Day 1 through Day 4 and 339 evidence records.
+
+#### 2. CEO voice-note handling
+- Reviewed T6c, in which the CEO requests employee quit-likelihood rankings and private Slack messages.
+- Added refusal handling for individual employee quit-likelihood ranking requests and private-message disclosure requests.
+- Reviewed T6d, which contains an auto-transcribed statement that an individual referred to as "Pria" has resigned.
+- Preserved the statement as an unverified transcript claim rather than confirmed HR information.
+- Did not resolve "Pria" to another employee based on name similarity.
+
+#### 3. Privacy and uncertainty verification
+- Runtime-checked multiple phrasings of individual quit-likelihood ranking requests.
+- Confirmed those requests return a refusal.
+- Confirmed an aggregate attrition-rate question is not incorrectly treated as an individual prediction request; it returns insufficient evidence where supporting data is unavailable.
+- The reported two-month notice period in T6d remains uncertain because the speaker qualifies it with "I think."
+
+#### 4. Current verification
+- Complete backend test suite: 79 passed, with one non-blocking Starlette/httpx deprecation warning.
+- Day 4 ingestion: two files processed successfully, zero failures.
+- Combined evidence store: 41 documents and 339 evidence records.
+- Frontend production build had passed in the preceding verification cycle; rerun before final submission.
+
+#### 5. Human verification and responsibility
+- Reviewed the Day 4 transcript claims as attributed statements, not independently verified employee records.
+- Preserved identity ambiguity and uncertainty around the reported resignation and notice period.
+- Used AI assistance for implementation guidance, test design, evidence interpretation and documentation. Final responsibility for reviewing and validating the submitted implementation remains with the developer.
