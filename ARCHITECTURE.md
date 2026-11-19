@@ -340,7 +340,7 @@ The project includes automated tests covering:
 
 The latest verified full backend test run completed with:
 
-**81 passed, 1 warning.**
+**85 passed, 1 warning.**
 
 The warning relates to a Starlette/httpx deprecation notice and does not indicate a test failure.
 
